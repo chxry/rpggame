@@ -50,6 +50,17 @@ impl Map {
     Ok(())
   }
 
+  pub fn add_row(&mut self, layer: &LayerType, tile: (u8, u8)) {
+    let width = self.get_width().into();
+    self.get_layer(layer).push(vec![tile; width])
+  }
+
+  pub fn add_col(&mut self, layer: &LayerType, tile: (u8, u8)) {
+    for row in self.get_layer(layer) {
+      row.push(tile);
+    }
+  }
+
   pub fn get_layer(&mut self, layer: &LayerType) -> &mut MapLayer {
     match layer {
       LayerType::Base => &mut self.base,
@@ -62,6 +73,7 @@ impl Map {
   pub fn get_width(&self) -> u8 {
     self.base[0].len().try_into().unwrap()
   }
+
   pub fn get_height(&self) -> u8 {
     self.base.len().try_into().unwrap()
   }

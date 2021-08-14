@@ -63,7 +63,11 @@ impl State for GameState {
       (position.y / SCALE) as u16 / 16,
     );
 
-    self.ui.update(self.tile, &self.layer);
+    self.ui.update(
+      self.tile,
+      &self.layer,
+      (self.map.get_width(), self.map.get_height()),
+    );
     Ok(())
   }
 
@@ -99,6 +103,8 @@ impl State for GameState {
         Key::Down => self.tile.1 += 1,
         Key::PageDown => self.layer = self.layer.lower(),
         Key::PageUp => self.layer = self.layer.higher(),
+        Key::Home => self.map.add_row(&self.layer, self.tile),
+        Key::End => self.map.add_col(&self.layer, self.tile),
         Key::S => {
           self.map.save(PATH).unwrap();
           self.ui.notify(format!("Saved:\n{}", PATH));
@@ -117,6 +123,7 @@ struct UiState {
   title: Text,
   tile: Text,
   layer: Text,
+  size: Text,
   notify: Text,
   notify_time: u16,
 }
@@ -139,6 +146,7 @@ impl UiState {
       title: Text::new("Map Editor:", font.clone()),
       tile: Text::new("Tile:\n(1, 0)", font.clone()),
       layer: Text::new("Layer: Base", font.clone()),
+      size: Text::new("0, 0", font.clone()),
       notify: Text::new(format!("Loaded:\n{}", PATH), font.clone()),
       notify_time: 0,
     })
@@ -158,16 +166,20 @@ impl UiState {
     self.title.draw(ctx, Vec2::new(32.0, 32.0));
     self.tile.draw(ctx, Vec2::new(32.0, 80.0));
     self.layer.draw(ctx, Vec2::new(32.0, 148.0));
+    self.size.draw(ctx, Vec2::new(32.0, 180.0));
     if self.notify_time < 80 {
       self.notify.draw(ctx, Vec2::new(32.0, 640.0));
     }
     draw_tile(ctx, Vec2::new(148.0, 64.0), tile, tilemap, SCALE);
   }
 
-  fn update(&mut self, tile: (u8, u8), layer: &LayerType) {
+  fn update(&mut self, tile: (u8, u8), layer: &LayerType, size: (u8, u8)) {
     self.notify_time += 1;
     self.tile.set_content(format!("Tile: \n{:?}", tile));
     self.layer.set_content(format!("Layer: {:?}", layer));
+    self
+      .size
+      .set_content(format!("Size: {}, {}", size.0, size.1));
   }
 
   fn notify(&mut self, content: String) {

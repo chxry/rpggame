@@ -7,7 +7,6 @@ use tetra::{Context, ContextBuilder, State, Event};
 use tetra::graphics::{self, Color, Camera};
 use tetra::input::Key;
 use tetra::math::Vec2;
-use tetra::window;
 use simplelog::{TermLogger, LevelFilter, Config, TerminalMode, ColorChoice};
 use log::info;
 
