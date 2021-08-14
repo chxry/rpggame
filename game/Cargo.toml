@@ -1,0 +1,10 @@
+[package]
+name = "game"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+tetra = "0.6"
+log = "0.4"
+simplelog = "0.10"
+map = { path="../map" }
