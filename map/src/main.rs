@@ -2,7 +2,7 @@ use tetra::{Result, Context, ContextBuilder, State, Event};
 use tetra::graphics::{self, Color, Texture, Rectangle, DrawParams};
 use tetra::graphics::mesh::{Mesh, ShapeStyle};
 use tetra::graphics::text::{Font, Text};
-use tetra::input::{MouseButton, Key, get_mouse_position};
+use tetra::input::{self, MouseButton, Key};
 use tetra::math::Vec2;
 
 use map::{Map, LayerType, draw_tile};
@@ -57,7 +57,7 @@ impl State for GameState {
   }
 
   fn update(&mut self, ctx: &mut Context) -> Result {
-    let position = get_mouse_position(ctx);
+    let position = input::get_mouse_position(ctx);
     self.cursor = Vec2::new(
       (position.x / SCALE) as u16 / 16,
       (position.y / SCALE) as u16 / 16,

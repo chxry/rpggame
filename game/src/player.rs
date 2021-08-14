@@ -1,10 +1,9 @@
 use std::time::Duration;
 use tetra::Context;
-use tetra::graphics::{Texture, Rectangle, DrawParams, animation::Animation};
+use tetra::graphics::{Texture, Rectangle, DrawParams};
+use tetra::graphics::animation::Animation;
 use tetra::input::{is_key_down, Key};
 use tetra::math::Vec2;
-
-use crate::SCALE;
 
 pub struct Player {
   assets: PlayerAssets,
@@ -18,7 +17,7 @@ impl Player {
     Ok(Self {
       assets: PlayerAssets::load(ctx)?,
       stats: PlayerStats::default(),
-      position: Vec2::new(128.0, 128.0),
+      position: Vec2::new(32.0, 32.0),
       velocity: Vec2::new(0.0, 0.0),
     })
   }
@@ -60,8 +59,7 @@ impl Player {
       ctx,
       DrawParams::new()
         .position(position)
-        .origin(Vec2::new(8.0, 12.0))
-        .scale(Vec2::new(SCALE, SCALE)),
+        .origin(Vec2::new(8.0, 12.0)),
     );
   }
 
@@ -116,8 +114,8 @@ struct PlayerStats {
 impl PlayerStats {
   fn default() -> Self {
     Self {
-      speed: 1.5,
-      sprint_speed: 2.0,
+      speed: 0.5,
+      sprint_speed: 0.5,
     }
   }
 }

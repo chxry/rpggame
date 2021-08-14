@@ -1,9 +1,8 @@
-use tetra::{Context};
-use tetra::graphics::Texture;
+use tetra::Context;
+use tetra::graphics::{Texture, Camera};
 use tetra::math::Vec2;
 
 use map::{Map, draw_layer};
-use crate::SCALE;
 
 pub struct World {
   tilemap: Texture,
@@ -19,25 +18,42 @@ impl World {
   }
 
   pub fn draw_base(&self, ctx: &mut Context) {
-    draw_layer(ctx, &self.map.base, &self.tilemap, SCALE);
-    draw_layer(ctx, &self.map.collide, &self.tilemap, SCALE);
-    draw_layer(ctx, &self.map.decor, &self.tilemap, SCALE);
+    draw_layer(ctx, &self.map.base, &self.tilemap, 1.0);
+    draw_layer(ctx, &self.map.collide, &self.tilemap, 1.0);
+    draw_layer(ctx, &self.map.decor, &self.tilemap, 1.0);
   }
 
   pub fn draw_overlay(&mut self, ctx: &mut Context) {
-    draw_layer(ctx, &self.map.overlay, &self.tilemap, SCALE);
+    draw_layer(ctx, &self.map.overlay, &self.tilemap, 1.0);
   }
 
   pub fn is_player_colliding(&mut self, position: Vec2<f32>) -> bool {
-    self.is_colliding(Vec2::new(position.x - 16.0, position.y + 48.0))
-      || self.is_colliding(Vec2::new(position.x + 16.0, position.y + 48.0))
-      || self.is_colliding(Vec2::new(position.x - 16.0, position.y))
-      || self.is_colliding(Vec2::new(position.x + 16.0, position.y))
+    self.is_colliding(Vec2::new(position.x - 4.0, position.y + 12.0))
+      || self.is_colliding(Vec2::new(position.x + 4.0, position.y + 12.0))
+      || self.is_colliding(Vec2::new(position.x - 4.0, position.y))
+      || self.is_colliding(Vec2::new(position.x + 4.0, position.y))
+  }
+
+  pub fn get_camera(&self, mut camera: Camera, position: Vec2<f32>) -> Camera {
+    camera.position = position;
+    while camera.visible_rect().left() < 0.0 {
+      camera.position.x += 0.1;
+    }
+    while camera.visible_rect().right() > self.map.get_width() as f32 * 16.0 {
+      camera.position.x -= 0.1;
+    }
+    while camera.visible_rect().top() < 0.0 {
+      camera.position.y += 0.1;
+    }
+    while camera.visible_rect().bottom() > self.map.get_height() as f32 * 16.0 {
+      camera.position.y -= 0.1;
+    }
+    camera
   }
 
   fn is_colliding(&mut self, position: Vec2<f32>) -> bool {
-    let x = (position.x / SCALE) as usize / 16;
-    let y = (position.y / SCALE) as usize / 16;
+    let x = position.x as usize / 16;
+    let y = position.y as usize / 16;
     self.map.collide[y][x].0 != 0
   }
 }

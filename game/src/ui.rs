@@ -1,9 +1,9 @@
 use tetra::Context;
-use tetra::graphics::{Rectangle, DrawParams, Color, get_device_info};
+use tetra::graphics::{self, Rectangle, DrawParams, Color};
 use tetra::graphics::mesh::{Mesh, ShapeStyle};
 use tetra::graphics::text::{Font, Text};
 use tetra::math::Vec2;
-use tetra::time::get_fps;
+use tetra::time;
 
 pub struct UiState {
   debug: Text,
@@ -54,7 +54,7 @@ Version: {}
 FPS: {:.0}
 Renderer: {}",
     env!("CARGO_PKG_VERSION"),
-    get_fps(ctx),
-    get_device_info(ctx).renderer
+    time::get_fps(ctx),
+    graphics::get_device_info(ctx).renderer
   )
 }

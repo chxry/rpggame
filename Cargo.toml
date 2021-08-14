@@ -3,3 +3,4 @@ members = [
   "game",
   "map"
 ]
+default-members = ["game"]

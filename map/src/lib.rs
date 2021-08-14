@@ -36,8 +36,8 @@ impl Map {
 
   pub fn save<P: AsRef<Path>>(&self, path: P) -> Result<(), Error> {
     let mut file = File::create(path)?;
-    let width: u8 = self.base[0].len().try_into().unwrap();
-    let height: u8 = self.base.len().try_into().unwrap();
+    let width = self.get_width();
+    let height = self.get_height();
 
     file.write(&width.to_be_bytes())?;
     file.write(&height.to_be_bytes())?;
@@ -57,6 +57,13 @@ impl Map {
       LayerType::Decor => &mut self.decor,
       LayerType::Overlay => &mut self.overlay,
     }
+  }
+
+  pub fn get_width(&self) -> u8 {
+    self.base[0].len().try_into().unwrap()
+  }
+  pub fn get_height(&self) -> u8 {
+    self.base.len().try_into().unwrap()
   }
 }
 
