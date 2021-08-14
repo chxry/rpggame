@@ -50,14 +50,26 @@ impl Map {
     Ok(())
   }
 
-  pub fn add_row(&mut self, layer: &LayerType, tile: (u8, u8)) {
+  pub fn add_row(&mut self, tile: (u8, u8)) {
     let width = self.get_width().into();
-    self.get_layer(layer).push(vec![tile; width])
+    self.base.push(vec![tile; width]);
+    self.collide.push(vec![(0, 0); width]);
+    self.decor.push(vec![(0, 0); width]);
+    self.overlay.push(vec![(0, 0); width]);
   }
 
-  pub fn add_col(&mut self, layer: &LayerType, tile: (u8, u8)) {
-    for row in self.get_layer(layer) {
+  pub fn add_col(&mut self, tile: (u8, u8)) {
+    for row in &mut self.base {
       row.push(tile);
+    }
+    for row in &mut self.collide {
+      row.push((0, 0));
+    }
+    for row in &mut self.decor {
+      row.push((0, 0));
+    }
+    for row in &mut self.overlay {
+      row.push((0, 0));
     }
   }
 

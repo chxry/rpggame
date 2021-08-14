@@ -24,7 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     TerminalMode::Stdout,
     ColorChoice::Auto,
   )?;
-  ContextBuilder::new("helo", WIDTH, HEIGHT)
+  ContextBuilder::new("game", WIDTH, HEIGHT)
     .quit_on_escape(true) //
     .vsync(false)
     .build()?

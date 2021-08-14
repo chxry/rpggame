@@ -103,8 +103,8 @@ impl State for GameState {
         Key::Down => self.tile.1 += 1,
         Key::PageDown => self.layer = self.layer.lower(),
         Key::PageUp => self.layer = self.layer.higher(),
-        Key::Home => self.map.add_row(&self.layer, self.tile),
-        Key::End => self.map.add_col(&self.layer, self.tile),
+        Key::Home => self.map.add_row(self.tile),
+        Key::End => self.map.add_col(self.tile),
         Key::S => {
           self.map.save(PATH).unwrap();
           self.ui.notify(format!("Saved:\n{}", PATH));
@@ -174,7 +174,9 @@ impl UiState {
   }
 
   fn update(&mut self, tile: (u8, u8), layer: &LayerType, size: (u8, u8)) {
-    self.notify_time += 1;
+    if self.notify_time <= 80 {
+
+    }
     self.tile.set_content(format!("Tile: \n{:?}", tile));
     self.layer.set_content(format!("Layer: {:?}", layer));
     self

@@ -28,8 +28,8 @@ impl World {
   }
 
   pub fn is_player_colliding(&mut self, position: Vec2<f32>) -> bool {
-    self.is_colliding(Vec2::new(position.x - 4.0, position.y + 12.0))
-      || self.is_colliding(Vec2::new(position.x + 4.0, position.y + 12.0))
+    self.is_colliding(Vec2::new(position.x - 4.0, position.y + 10.0))
+      || self.is_colliding(Vec2::new(position.x + 4.0, position.y + 10.0))
       || self.is_colliding(Vec2::new(position.x - 4.0, position.y))
       || self.is_colliding(Vec2::new(position.x + 4.0, position.y))
   }
